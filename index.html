@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- <meta name="description" content="???"> -->
+  <!-- <meta name="keywords" content="Nerfies, D-NeRF, NeRF"> -->
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+  <title>Trajectory-based Diffusion from One-shot Human Video for Generalizable Manipulation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script type="module" src="static/js/model-viewer.min.js"></script>
+
+  <!-- <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script> -->
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-fullhd">
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h1 class="title is-1 publication-title">
+          <span  style="font-style: italic; font-weight: 800;">TDV:</span> 
+          <span>Trajectory-based Diffusion from One‑shot Human <br> Video Demonstrations for Generalizable Manipulation</span>
+        </h1>
+        <br>
+        <div class="is-size-5 publication-authors">
+          <span class="author-block">
+            <a href="#">Guoping Pan</a><sup></sup>,</span>
+          <span class="author-block">
+            <a href="#">Jincheng Li</a><sup></sup>,</span>
+          <span class="author-block">
+            <a href="#">Wannan Cao</a><sup></sup>,
+          </span>
+          <span class="author-block">
+            <a href="#">Baolin Jiang</a><sup></sup>,
+        </div>
+
+        <div class="is-size-5 affiliation">
+          <span class="author-block"><sup>1</sup>Tsinghua University,</span>
+          <!-- <span class="author-block"><sup>2</sup>Google Research</span> -->
+        </div>
+
+        <br>
+        <div class="affiliation-note">
+          <sup>*</sup> indicates equal contributions
+        </div>
+        <!-- 链接 -->
+        <div class="column has-text-centered">
+          <div class="publication-links">
+            <!-- Paper Link. -->
+            <span class="link-block">
+              <a href="#"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>Paper</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="#"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                </span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <!-- Video Link. -->
+            <span class="link-block">
+              <a href="#"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fab fa-youtube"></i>
+                </span>
+                <span>Video</span>
+              </a>
+            </span>
+            <!-- Code Link. -->
+            <span class="link-block">
+              <a href="#"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+                </a>
+            </span>
+            <!-- Dataset Link. -->
+            <span class="link-block">
+              <a href="#"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="far fa-images"></i>
+                </span>
+                <span>Data</span>
+                </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="hero teaser">
+  <!-- 视频 -->
+  <div class="container is-max-widescreen">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-vcentered  is-centered">
+          <video id="teaser" controls height="100%" width="100%">
+            <source src="./static/videos/TDV_abstract.mp4"
+                    type="video/mp4">
+          </video>
+          </br>
+        </div>
+        <br>
+        <h2 class="subtitle has-text-centered" style="margin-top: -0.8em;">
+        <!-- The <strong>O.O.D. generalization</strong> capabilities of visuomotor policies empowered by
+        <strong><i>DemoGen</i></strong>-generated synthetic demonstrations,
+          given <strong>only one</strong> human-collected demonstration per task. -->
+       <strong><i>TDV</i></strong> &nbsp;enables cross-embodiment generalization manipulation from <strong>one-shot</strong> human demonstration <br>by leveraging efficient trajectory generation techniques.
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Abstract. -->
+  <div class="container is-max-widescreen">
+  <hr style="margin-top: 1em;">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3" style="margin-bottom: 0.5em;">Abstract</h2>
+          <img style="margin-bottom: 5px;" src="./static/images/surface.jpg" class="method-image">
+          <div class="content has-text-justified">
+            <p>
+              Imitation learning enables robots to perform complex tasks by leveraging human-collected demonstrations. 
+              However, most existing approaches require labor-intensive data collection with additional teleoperation systems, which hinders scalability. Human videos represent a natural source of data that implicitly contain knowledge of manipulation behaviors. However, transferring them to robots remains challenging due to the visual domain gap and the absence of explicit action labels. 
+            </p>
+            <p>
+              In this work, we propose <i>TDV</i>, a trajectory-based diffusion framework that enables generalizable manipulation by facilitating scalable data generation. 
+              <i>TDV</i> focuses on task-relevant objects by utilizing plug-and-play 6D pose estimation techniques to extract object trajectories from human videos, thereby mitigating the impact of irrelevant backgrounds and varying viewpoints. As a modality-agnostic intermediate representation, trajectory enables efficient data generation, which is key to achieving generalizable manipulation. 
+            </p>
+            <p>
+              Our method outperforms prior approaches on RLBench simulation tasks, achieving near 100% success rates across seven tasks. In real-world experiments, <i>TDV</i> enables cross-embodiment generalization manipulation from one-shot human demonstrations by leveraging efficient trajectory generation techniques.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="container is-max-widescreen">
+    <!-- Real world evaluation -->
+    <div class="hero-body">
+      <hr style="margin-top: 1em;">
+      <div class="container">
+        <div class="columns is-centered has-text-centered">
+          <h2 class="title is-3" style="margin: 0.5em;">Real-world Evaluation</h2>
+        </div>
+        <div class="content has-text-justified">
+          <p>We evaluated our method on 4 real-world manipulation tasks. All models use single camera views and 8 human demonstrations per task.</p>
+        </div>
+        <div id="results-carousel" class="carousel results-carousel" style="display: flex; gap: 20px; justify-content: center;">
+          <div>
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+            <br>
+
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+            <p style="text-align: center;">Task: mug-on-coaster</p>
+            <p><br></p>
+          </div>
+          <div>
+            <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+            <br>
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+            <p style="text-align: center;">Task: plant-in-vase</p>
+            <p><br></p>
+          </div>
+
+          <div>
+            <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+
+            <br>
+
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+            <br>
+            <p style="text-align: center;">Task: pour-water</p>
+            <p><br></p>
+          </div>
+          <div>
+            <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+
+            <br>
+
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/cat.mp4"
+                      type="video/mp4">
+            </video>
+            <p style="text-align: center;">Task: put-plate-into-oven</p>
+            <p><br></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Background Generalization -->
+    <div class="hero-body">
+      <div class="container">
+        <hr style="margin-top: 1em;">
+        <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3" style="margin: 0.5em;">Background Generalization</h2>
+        </div>
+      </div>
+      <div class="rows">
+
+
+        <!-- <p class="content has-text-centered">
+          <span style="letter-spacing: 0.07em;">V<span style="font-variant: small-caps; font-size: 1.2em;">i</span>L<span style="font-variant: small-caps; font-size: 1.2em;">a</span></span> effectively utilizes visual feedback in an intuitive and natural way, enabling robust closed-loop planning in dynamic environments.
+        </p> -->
+  
+        <div class="columns">
+          <div class="column has-text-centered">
+            <video id="dist1"
+              controls
+              muted
+              autoplay
+              loop controlsList="nodownload"
+              width="99%">
+              <source src="./static/videos/BackgroundGeneralization/pull_tissue1.mp4" 
+              type="video/mp4">
+            </video>
+          </div>
+  
+          <div class="column has-text-centered">
+            <video id="dist1"
+              controls
+              muted
+              autoplay
+              loop controlsList="nodownload"
+              width="99%">
+              <source src="./static/videos/BackgroundGeneralization/pull_tissue2.mp4" 
+              type="video/mp4">
+            </video>
+          </div>
+        </div>
+  
+        <div class="columns">
+          <div class="column has-text-centered">
+            <video id="dist1"
+              controls
+              muted
+              autoplay
+              loop controlsList="nodownload"
+              width="99%">
+              <source src="./static/videos/BackgroundGeneralization/unplug_charger1.mp4"
+              type="video/mp4">
+            </video>
+          </div>
+  
+          <div class="column has-text-centered">
+            <video id="dist1"
+              controls
+              muted
+              autoplay
+              loop controlsList="nodownload"
+              width="99%">
+              <source src="./static/videos/BackgroundGeneralization/unplug_charger2.mp4" 
+              type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <p class="content" style="margin-bottom: 1.5em; text-align: left;">
+          To evaluate background robustness, we collect human demonstration videos in environments with backgrounds distinct from the robot workspace, 
+          and introduce four types of background perturbations. 
+        </p>
+      </div>
+    </div>
+
+    <!-- View Generalization -->
+    <div class="hero-body">
+      <div class="container">
+        <hr style="margin-top: 1em;">
+        <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3" style="margin: 0.5em;">View Generalization</h2>
+        </div>
+        <div class="container block is-centered">
+          <div class="columns is-centered">
+            <div class="column is-2" style="width: 20%;">
+                <div class="select" style="display: block;">
+                    <select id="task-selection" style="width: 100%;" onchange="SelectTestVideo()">
+                        <option value="pour_water">pour-water</option>
+                    </select>
+                </div>
+            </div>
+            <div class="column is-2" style="width: 20%;">
+                <div class="select" style="display: block;">
+                    <select id="spatial-selection" style="width: 100%;" onchange="SelectTestVideo()">
+                      <option value="view1">viewpoint #1</option>
+                      <option value="view2">viewpoint #2</option>
+                      <!-- <option value="fail">Failure</option>  -->
+                    </select>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <p style="text-align:center;">
+              <video id="test-video" width="80%" height="80%" controls autoplay loop muted>
+                <source src="./static/videos/ViewGeneralization/pour_water/view1.mp4" type="video/mp4">
+              </video>
+            </p>
+          </div>
+        </div>
+        <p class="content has-text-centered" style="text-align: left">
+          For viewpoint variation, we conduct evaluations using different camera viewpoints that are distinct from those used during data collection.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Details on Image-To-3D Generation -->
+    <div class="hero-body">
+      <div class="container">
+        <hr style="margin-top: 1em;">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3" style="margin: 0.5em;">Details on Image-To-3D Generation</h2>
+            <br>
+            <div class="content has-text-justified has-text-centered">
+
+              <p>
+                Our approach requires a demonstration dataset for training. The dataset collection involves two steps: <b>object mesh reconstruction</b> (see below) and <b>demonstration video collection</b> (see Real-world Evaluation). The mesh is used for object pose tracking during both training and testing phases.
+                <br><br>
+                Given a close-up image of the task-relevant object, the image-to-3D generation model <a href="https://github.com/microsoft/TRELLIS">TRELLIS</a> is capable of generating high-quality 3D models resembling the object, a capability acquired through training on a large-scale dataset of diverse objects.
+                <br><br>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+        <!-- <div class="container is-max-desktop"> -->
+          <div class="columns is-centered has-text-centered">
+            <div class="column">
+              <div class="content">
+                <h2 class="title is-4">Task: Stitch-Card</h2>
+                  <table>
+                    <tr>
+                      <td>
+                        <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/steve.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                        <p style="text-align: center;">Stitch</p>
+                      </td>
+                      <td>
+                        <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/card.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                        <p style="text-align: center;">card</p>
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+            </div>
+      
+            <div class="column">
+              <div class="columns is-centered has-text-centered">
+                <div class="column content">
+                  <h2 class="title is-4">Task: Pour-Water</h2>
+                  <table>
+                    <tr>
+                      <td>
+                        <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/pink_mug.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                        <p style="text-align: center;">pink mug</p>
+                      </td>
+                      <td>
+                        <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/blue_mug.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                        <p style="text-align: center;">blue mug</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="content has-text-centered">
+                <h2 class="title is-4">Task: Cup-Coaster</h2>
+                  <table>
+                    <tr>
+                      <td>
+                        <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/teapot.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                        <p style="text-align: center;">cup</p>
+                      </td>
+                      <td>
+                        <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/coaser.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                        <p style="text-align: center;">coaster</p>
+                      </td>
+                    </tr>
+                  </table>
+              </div>
+            </div>
+          </div>
+        <!-- </div>   -->
+
+        <!-- <div class="container is-max-desktop"> -->
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h2 class="title is-4">Task: Pull-Drawer</h2>
+              <div class="columns is-centered">
+                <div class="column content">
+                    <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/drawer.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                    <p style="text-align: center;">drawer</p>
+                </div>
+              </div>
+            </div>
+            <div class="column has-text-centered">
+              <h2 class="title is-4">Task: Unplug-Charger</h2>
+              <div class="columns is-centered">
+                <div class="column content">
+                    <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/socket.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                    <p style="text-align: center;">socket</p>
+                </div>
+              </div>
+            </div>
+            <div class="column has-text-centered">
+              <h2 class="title is-4">Task: Pull-Tissue</h2>
+              <div class="columns is-centered">
+                <div class="column content">
+                    <model-viewer alt="" style="height: 200px; width: 100%;" src="./static/model/tissue.glb" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+                    <p style="text-align: center;">tissue</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- </div>   -->
+        
+    </div>
+      
+      
+    <div class="hero-body">  
+      <hr style="margin-top: 1em;">
+      <br>
+        <div class="container">
+          <!-- <div class="column is-four-fifths"> -->
+          <div class="columns is-centered has-text-centered">
+            <h2 class="title is-3" style="margin-bottom: 0.5em;">BibTeX</h2>
+          </div>
+          <pre><code>@article{park2021nerfies,
+            author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+            title     = {Nerfies: Deformable Neural Radiance Fields},
+            journal   = {ICCV},
+            year      = {2021},
+          }</code></pre>
+        </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="static\1058_TDV_Trajectory_based_Diff.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="#" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9">
+        <div class="content">
+          <p>
+            The website template was borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
+<script>
+  function randomizeSelect(selectElement) {
+    var options = selectElement.options;
+    random_move = Math.random();
+    var randomIndex = Math.floor(Math.random() * options.length);
+    selectElement.selectedIndex = randomIndex;
+  }
+
+  function SelectTestVideo() {
+    var task_name = document.getElementById("task-selection").value;
+    var spatial_id = document.getElementById("spatial-selection").value;
+
+    console.log("SelectTestVideo", task_name, spatial_id)
+    var video = document.getElementById("test-video");
+    video.src = "./static/videos/ViewGeneralization" + task_name + "/" + spatial_id + ".mp4";
+    
+    // alert(video.src)
+    console.log("video.src:", video.src);
+    video.play();
+  }
+</script>

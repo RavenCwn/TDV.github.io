@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Model Viewer 示例（鼠标滚轮缩放）</title>
+    <!-- 引入 model-viewer -->
+    <!-- <script type="module" src="static/js/model-viewer.min.js"></script> -->
+    <script type="module" src="./static/js/model-viewer.min.js"></script>
+
+    <style>
+      body, html {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      model-viewer {
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <model-viewer
+      id="mv"
+      src="./static/model/steve.glb"
+      alt="示例 3D 模型"
+      camera-controls
+      exposure="1"
+      shadow-softness="1"
+      shadow-intensity="1"
+      
+      style="--poster-color: #ffffff;"
+        field-of-view="20deg"
+        min-field-of-view="5deg"
+        min-camera-orbit="auto auto 0m"
+        max-camera-orbit="auto auto 20m"
+    ></model-viewer>
+
+    <script>
+      const mv = document.querySelector('#mv');
+      const ZOOM_FACTOR = 0.95;   // 每次缩放倍率（<1 放大，>1 缩小）
+      const MIN_RADIUS = 0.2;     // 最小半径
+      const MAX_RADIUS = 50;      // 最大半径
+
+      // 解析 camera-orbit，返回 [theta, phi, radius]
+      function parseOrbit(str) {
+        return str.split(' ').map(s => parseFloat(s));
+      }
+      // 生成 camera-orbit 字符串
+      function makeOrbit(theta, phi, radius) {
+        return `${theta.toFixed(3)}rad ${phi.toFixed(3)}rad ${radius.toFixed(3)}m`;
+      }
+
+      // 拦截滚轮事件
+      mv.addEventListener('wheel', event => {
+        event.preventDefault();   // 阻止默认页面滚动
+        let [theta, phi, radius] = parseOrbit(mv.getAttribute('camera-orbit'));
+
+        // deltaY < 0 向上滚（放大），deltaY > 0 向下滚（缩小）
+        if (event.deltaY < 0) {
+          radius = Math.max(MIN_RADIUS, radius * ZOOM_FACTOR);
+        } else {
+          radius = Math.min(MAX_RADIUS, radius / ZOOM_FACTOR);
+        }
+
+        mv.cameraOrbit = makeOrbit(theta, phi, radius);
+      });
+    </script>
+  </body>
+</html>
